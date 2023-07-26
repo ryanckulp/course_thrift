@@ -56,7 +56,7 @@ class CourseScraper
   end
 
   def new_browser
-    Watir::Browser.new browser_profile, headless: true
+    Watir::Browser.new browser_profile, headless: true, args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222]
   end
 
   def browser_profile
