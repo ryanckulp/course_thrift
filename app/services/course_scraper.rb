@@ -1,3 +1,5 @@
+require 'open-uri'
+
 # PODIA.com only courses for this MVP proof of concept
 class CourseScraper
   attr_accessor :browser, :course
