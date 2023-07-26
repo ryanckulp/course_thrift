@@ -8,13 +8,19 @@
     </div>
     <div class="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900">
       <h3>
-        <%= link_to course_path(course.id) do %>
+        <%= link_to course_path(course.slug) do %>
           <span aria-hidden="true" class="absolute inset-0"></span>
           <%= course.title %>
         <% end %>
       </h3>
-      <p><%= number_to_currency(course.original_price) %></p>
+      <p>
+        <% if course.lowest_price %>
+          <%= number_to_currency(course.lowest_price) %>
+        <% else %>
+          <span class="text-red-400 uppercase">sold out</span>
+        <% end %>
+      </p>
     </div>
-    <p class="mt-1 text-sm text-gray-500">CATEGORY</p>
+    <!-- <p class="mt-1 text-sm text-gray-500">CATEGORY</p> -->
   </div>
 <% end %>

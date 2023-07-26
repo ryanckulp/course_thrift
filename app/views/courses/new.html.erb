@@ -1,4 +1,25 @@
-<div>
-  <h1 class="font-bold text-4xl">Courses#new</h1>
-  <p>Find me in app/views/courses/new.html.erb</p>
+<%= render partial: "shared/heading", locals: { title: 'Import a Course', description: 'We drive traffic and distribute login details, you get paid.' } %>
+
+<div class="max-w-xl mx-auto space-y-4 mt-8">
+  <div class="border border-gray-500 rounded-sm p-8 space-y-4">
+    <%= form_for @course do |f| %>
+      <div>
+        <label for="course_url" class="block text-sm font-medium leading-6 text-gray-900">Input a Course URL</label>
+        <div>
+          <input type="url" name="course[url]" id="course_url" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6" placeholder="https://www.founderhacker.com/fundamentals">
+        </div>
+        <p class="mt-2 text-sm text-gray-500">
+          <!-- INSERT HELP TEXT IF DESIRED -->
+        </p>
+      </div>
+      <div>
+        <button type="submit" class="inline-flex items-center gap-x-1.5 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+          Import
+          <!-- <svg class="-mr-0.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+          </svg> -->
+        </button>
+      </div>
+    <% end %>
+  </div>
 </div>
