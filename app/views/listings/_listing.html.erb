@@ -1,0 +1,13 @@
+<div class="border border-gray-500 rounded-sm p-8 space-y-4">
+  <div class="flex">
+    <div class="">
+      <%= listing.course.title %>,
+      selling for <%= number_to_currency(listing.price) %>
+      (<%= listing.discount_percent.to_f %>% lower than live price of
+      <%= number_to_currency(listing.course.original_price) %>)
+    </div>
+    <div class="flex-1 text-right">
+      <%= link_to 'Edit', edit_listing_path(listing.id) %>
+    </div>
+  </div>
+</div>

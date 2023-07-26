@@ -1,0 +1,7 @@
+<%= render partial: "shared/heading", locals: {title: 'Your Listings', description: "Create a new listing <a href='#{new_listing_path}' class='text-primary'>here</a>."} %>
+
+
+
+<div class="max-w-3xl mx-auto space-y-4">
+  <%= render @listings %>
+</div>
