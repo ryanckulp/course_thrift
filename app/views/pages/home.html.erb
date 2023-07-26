@@ -16,6 +16,16 @@
           <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
             Buy and sell verified courses at a fraction of the price.
           </p>
+
+          <div class="flex mt-8 gap-x-2 w-72">
+            <div class="w-full">
+              <button onclick="redirectTo('browse')" type="button" class="w-full rounded-md bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Browse</button>
+            </div>
+            <div class="w-full">
+              <button onclick="redirectTo('list')" type="button" class="w-full rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">Sell</button>
+            </div>
+          </div>
+
         </div>
         <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
           <svg class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-8 scale-75 origin-top sm:scale-100 lg:hidden" width="640" height="784" fill="none" viewBox="0 0 640 784" aria-hidden="true">
@@ -30,7 +40,6 @@
           <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
             <div class="relative block w-full bg-white rounded-sm overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <img class="w-full" src="https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1350&q=80" alt="">
-
             </div>
           </div>
         </div>
@@ -38,3 +47,9 @@
     </main>
   </div>
 </div>
+
+<script type="text/javascript">
+  function redirectTo(path) {
+    window.location.href = path;
+  }
+</script>

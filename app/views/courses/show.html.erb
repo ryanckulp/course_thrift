@@ -1,12 +1,12 @@
 <div class="max-w-5xl mx-auto mt-14">
   <div class="flex gap-x-12">
     <div class="w-full">
-      <img src="https://tailwindui.com/img/ecommerce-images/product-page-05-related-product-01.jpg" alt="">
+      <%= image_tag @course.featured_image %>
     </div>
     <div class="w-full space-y-8">
       <div class="flex">
         <div>
-          <h1 class="text-3xl font-semibold">Fundamentals</h1>
+          <h1 class="text-3xl font-semibold"><%= @course.title %></h1>
         </div>
         <div class="flex-1 text-right">
           <h3 class="text-xl">$9</h3>
