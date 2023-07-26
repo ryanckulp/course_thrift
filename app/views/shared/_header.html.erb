@@ -1,8 +1,7 @@
 <header class="py-4 px-2" data-controller="header">
   <nav class="flex items-center justify-between flex-wrap">
     <div class="flex items-center flex-no-shrink text-white mr-6">
-      <% logo_path = current_user ? dashboard_index_path : root_path %>
-      <%= link_to logo_path do %>
+      <%= link_to root_path do %>
         <%= image_tag "avatar.png",  style: "max-height: 42px" %>
       <% end %>
       <span class="font-semibold text-xl tracking-tight"><%= ENV['COMPANY_NAME'] %></span>
@@ -17,15 +16,16 @@
 
     <div id="main-nav" class="w-full flex-grow sm:flex text-right sm:w-auto hidden" data-header-target="mainNav">
       <div class="text-sm sm:flex-grow">
+        <%= link_to 'Browse', courses_path, class: nav_link_classes('courses') %>
+        <%= link_to 'Sell', new_listing_path, class: nav_link_classes('listings/new') %>
         <% if current_user %>
           <%= link_to 'Admin', admin_dashboard_index_path, class: nav_link_classes('admin/dashboard') if current_user.admin? %>
-          <%= link_to 'Dashboard', dashboard_index_path, class: nav_link_classes('dashboard') %>
           <%= link_to 'Account', account_index_path, class: nav_link_classes('account') %>
-          <%= link_to 'Logout', logout_path, class: nav_link_classes %>
+          <%= link_to 'Logout', logout_path, class: nav_link_classes('logout') %>
         <% else %>
           <%= link_to 'Contact', "mailto:#{ENV['ADMIN_EMAIL']}", target: '_blank', class: nav_link_classes('contact')  %>
           <%= link_to 'Login', new_user_session_path, class: nav_link_classes('login') %>
-          <%= link_to 'Signup', new_user_registration_path, class: 'ml-8 whitespace-nowrap text-base font-medium inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700' %>
+          <%= link_to 'Signup', new_user_registration_path, class: 'ml-8 whitespace-nowrap text-base font-medium inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary-hover' %>
         <% end %>
       </div>
     </div>
