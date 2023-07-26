@@ -25,8 +25,9 @@ Rails.application.routes.draw do
   resources :courses, only: [:index, :new, :create, :update, :show]
   get 'browse', to: 'courses#index'
 
-  resources :listings, only: [:new, :create, :update, :destroy]
+  resources :listings, only: [:new, :edit, :index, :create, :update, :destroy]
   get 'list', to: 'listings#new'
+  get "listings/sold/:code", to: 'listings#sold', as: 'listing_sold'
 
   # admin panels
   authenticated :user, -> user { user.admin? } do
