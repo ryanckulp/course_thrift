@@ -1,19 +1,22 @@
 class CoursesController < ApplicationController
+  before_action :set_course, only: [:show]
+
   def index
-    @courses = Course.published
+    @courses = Course.purchaseable
   end
 
   def show
-    @course = Course.find(params[:id])
+    @listing = @course.listings.purchaseable.lowest_priced.first
   end
 
   def new
+    @course = Course.new
   end
 
   def create
     course = Course.new(course_params)
     if course.save
-      redirect_to course_path(course.id)
+      redirect_to new_listing_path
     else
       redirect_to new_course_path
     end
@@ -23,5 +26,9 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course).permit(:url)
+  end
+
+  def set_course
+    @course = Course.find_by_slug(params[:id])
   end
 end
