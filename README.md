@@ -1,6 +1,8 @@
 # Course Thrift
 a Rails 7 live stream build by [@ryanckulp](https://twitter.com/ryanckulp). learn how to use this at [24 Hour MVP](https://founderhacker.com/24-hour-mvp).
 
+url: https://course-thrift-6e04a47f6ec1.herokuapp.com
+
 ## Installation
 1. clone the repo
 2. bin/setup
