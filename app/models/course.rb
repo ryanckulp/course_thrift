@@ -2,7 +2,7 @@ require 'open-uri'
 
 class Course < ApplicationRecord
   has_many :listings, dependent: :destroy
-  has_one_attached :featured_image
+  has_one_attached :featured_image, service: (Rails.env.production? ? :amazon : :local)
 
   CATEGORIES = %w(programming marketing design crypto finance relationships productivity)
 
