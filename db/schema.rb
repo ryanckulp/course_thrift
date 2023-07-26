@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_26_192530) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_222323) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_192530) do
     t.decimal "original_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -81,6 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_192530) do
     t.string "payment_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "payment_url"
+    t.string "code"
     t.index ["course_id"], name: "index_listings_on_course_id"
     t.index ["user_id"], name: "index_listings_on_user_id"
   end
@@ -97,6 +100,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_192530) do
     t.string "stripe_customer_id"
     t.boolean "paying_customer", default: false
     t.string "stripe_subscription_id"
+    t.string "paypal_address"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
