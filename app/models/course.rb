@@ -4,6 +4,8 @@ class Course < ApplicationRecord
   has_many :listings, dependent: :destroy
   has_one_attached :featured_image
 
+  CATEGORIES = %w(programming marketing design crypto finance relationships productivity)
+
   validates_presence_of :url
   validates_uniqueness_of :url
 
@@ -16,8 +18,9 @@ class Course < ApplicationRecord
 
   after_create_commit :import
 
+  # TODO: check for 'www' presence
   def sanitize_url
-    self.url = self.url.split('?')[0].split('#')[0].chomp('/')
+    self.url = self.url.split('?')[0].split('#')[0].chomp('/').downcase
   end
 
   def import
