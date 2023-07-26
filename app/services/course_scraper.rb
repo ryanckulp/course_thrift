@@ -12,7 +12,7 @@ class CourseScraper
     save_params
     close_browser
   end
-  # handle_asynchronously :call
+  handle_asynchronously :call
 
   private
 
@@ -24,9 +24,11 @@ class CourseScraper
   def save_params
     course.update({
       title: title,
+      description: description,
       original_price: price,
     })
 
+    course.slugify!
     course.featured_image.attach(io: OpenURI.open_uri(image), filename: "course_#{course.id}.jpg")
   end
 
@@ -36,6 +38,10 @@ class CourseScraper
 
   def title
     browser.meta(property: 'og:title').content
+  end
+
+  def description
+    browser.meta(name: 'description').content
   end
 
   def price
@@ -56,7 +62,8 @@ class CourseScraper
   end
 
   def new_browser
-    Watir::Browser.new browser_profile, options: { args:  %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222] }
+    # removed for local testing: --remote-debugging-port=9222
+    Watir::Browser.new browser_profile, options: { args:  %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu] }
   end
 
   def browser_profile
