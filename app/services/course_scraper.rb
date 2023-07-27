@@ -43,7 +43,10 @@ class CourseScraper
   end
 
   def description
+
     description_meta = site_content.at_css('meta[name="description"]')
+    return 'Not provided' if description_meta.nil?
+
     description_meta['content']
   end
 
