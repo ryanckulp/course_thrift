@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.2.0'
+ruby '3.2.1'
 
 gem 'rails', '7.0.5'
 gem 'sprockets-rails'
@@ -25,6 +25,7 @@ gem 'chartkick'
 gem 'groupdate' # used by Chartkick
 gem 'watir'
 gem 'image_processing', '>= 1.2'
+gem 'pry'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[ mingw mswin x64_mingw jruby ]
