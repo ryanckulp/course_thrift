@@ -1,29 +1,28 @@
-require 'open-uri'
-
-# PODIA.com only courses for this MVP proof of concept
 class CourseScraper
-  attr_accessor :browser, :course
+  attr_accessor :course, :doc
+  require 'nokogiri'
+  require 'open-uri'
+  require 'json'
 
   def initialize(course)
-    @browser = new_browser
     @course = course
+    # PODIA.com only courses for this MVP proof of concept
   end
 
   def call
-    load_course
-    save_params
-    close_browser
+    save_course
   end
+
   handle_asynchronously :call
 
   private
 
-  def load_course
-    browser.goto(course.url)
-    browser.scroll.to(:bottom)
+
+  def doc
+    @doc ||= Nokogiri::HTML(URI.open(course.url)) # make it memoized so we don't have to keep hitting the URL
   end
 
-  def save_params
+  def save_course
     course.update({
       title: title,
       description: description,
@@ -34,42 +33,34 @@ class CourseScraper
     course.featured_image.attach(io: OpenURI.open_uri(image), filename: "course_#{course.id}.jpg")
   end
 
-  def close_browser
-    browser.close
-  end
 
   def title
-    browser.meta(property: 'og:title').content
+    title = doc.at_css('meta[property="og:title"]')['content']
   end
 
   def description
-    browser.meta(name: 'description').content
+    description_meta = doc.at_css('meta[name="description"]')
+    description_content = description_meta['content']
   end
 
   def price
-    begin # happy path
-      enroll_btn = browser.a(href: /\/buy\?payment_terms=full/).text # => "Buy for $2,500"
-      enroll_btn.split("Buy for $")[-1].delete(',').to_f # handles "Get access for free" OK
-    rescue => e
-      puts "ERROR while finding price."
-    end
+    element = doc.at('[data-react-class="creator_ui/section_adapters/ProductBanner"]')
+
+    return 0 if element.nil?
+
+    react_props = JSON.parse(element['data-react-props'])
+    price_with_dollar_sign = react_props['prices']['full']
+    price = price_with_dollar_sign.gsub(/[^\d\.]/, '').to_f
+
   end
 
   def image
-    browser.meta(property: 'og:image').content
+    element = doc.at('[data-react-class="creator_ui/section_adapters/ProductBanner"]')
+
+    react_props = JSON.parse(element['data-react-props'])
+    images = react_props["images"]
+
+    images['primary']
   end
 
-  def image_io
-    OpenURI.open_uri(image)
-  end
-
-  def new_browser
-    # removed for local testing: --remote-debugging-port=9222
-    Watir::Browser.new browser_profile, options: { args:  %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu] }
-  end
-
-  def browser_profile
-    return :firefox if Rails.env.development?
-    :chrome
-  end
 end
