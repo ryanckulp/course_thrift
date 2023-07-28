@@ -1,75 +1,73 @@
+require 'nokogiri'
 require 'open-uri'
+require 'json'
 
-# PODIA.com only courses for this MVP proof of concept
 class CourseScraper
-  attr_accessor :browser, :course
+  attr_accessor :course, :site_content
 
   def initialize(course)
-    @browser = new_browser
     @course = course
+    # PODIA.com only courses for this MVP proof of concept
+
   end
 
   def call
-    load_course
-    save_params
-    close_browser
+    scrape_course_data
+    save_course_metadata
   end
+
   handle_asynchronously :call
 
   private
 
-  def load_course
-    browser.goto(course.url)
-    browser.scroll.to(:bottom)
+  def site_content
+    @site_content ||= Nokogiri::HTML(URI.open(course.url))
   end
 
-  def save_params
+  def scrape_course_data
     course.update({
       title: title,
       description: description,
       original_price: price,
     })
-
-    course.slugify!
-    course.featured_image.attach(io: OpenURI.open_uri(image), filename: "course_#{course.id}.jpg")
+    attach_featured_image
+    course.slugify! # calling it here bc otherwise we are to early when calling from the course modal.. todo: fix this
   end
 
-  def close_browser
-    browser.close
+  def course_data
+    site_content.at('[data-react-class="creator_ui/section_adapters/ProductBanner"]')
   end
 
   def title
-    browser.meta(property: 'og:title').content
+    site_content.at_css('meta[property="og:title"]')['content']
   end
 
   def description
-    browser.meta(name: 'description').content
+
+    description_meta = site_content.at_css('meta[name="description"]')
+    return 'Not provided' if description_meta.nil?
+
+    description_meta['content']
   end
 
   def price
-    begin # happy path
-      enroll_btn = browser.a(href: /\/buy\?payment_terms=full/).text # => "Buy for $2,500"
-      enroll_btn.split("Buy for $")[-1].delete(',').to_f # handles "Get access for free" OK
-    rescue => e
-      puts "ERROR while finding price."
-    end
+    return 0 if course_data.nil?
+    price_with_dollar_sign.gsub(/[^\d\.]/, '').to_f
   end
 
-  def image
-    browser.meta(property: 'og:image').content
+  def price_with_dollar_sign
+    react_props['prices']['full']
   end
 
-  def image_io
-    OpenURI.open_uri(image)
+  def react_props
+    JSON.parse(course_data['data-react-props'])
   end
 
-  def new_browser
-    # removed for local testing: --remote-debugging-port=9222
-    Watir::Browser.new browser_profile, options: { args:  %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu] }
+  def fetch_image
+    react_props["images"]['primary']
   end
 
-  def browser_profile
-    return :firefox if Rails.env.development?
-    :chrome
+  def attach_featured_image
+    course.featured_image.attach(io: OpenURI.open_uri(fetch_image), filename: "course_#{course.id}.jpg")
   end
 end
