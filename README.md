@@ -1,5 +1,5 @@
 # Course Thrift
-a Rails 7 live stream build by [@ryanckulp](https://twitter.com/ryanckulp). learn how to use this at [24 Hour MVP](https://founderhacker.com/24-hour-mvp).
+a Rails 7 live stream build by [@ryanckulp](https://twitter.com/ryanckulp). watch the full build [here](https://www.youtube.com/watch?v=u9xajgugRLM). learn how to build this yourself at [24 Hour MVP](https://founderhacker.com/24-hour-mvp).
 
 url: https://course-thrift-6e04a47f6ec1.herokuapp.com
 
