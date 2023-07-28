@@ -1,6 +1,4 @@
-require 'nokogiri'
 require 'open-uri'
-require 'json'
 
 class CourseScraper
   attr_accessor :course, :site_content
@@ -8,20 +6,17 @@ class CourseScraper
   def initialize(course)
     @course = course
     # PODIA.com only courses for this MVP proof of concept
-
   end
 
   def call
     scrape_course_data
-    save_course_metadata
   end
-
   handle_asynchronously :call
 
   private
 
   def site_content
-    @site_content ||= Nokogiri::HTML(URI.open(course.url))
+    @site_content ||= Nokogiri::HTML(OpenURI.open_uri(course.url))
   end
 
   def scrape_course_data
@@ -43,9 +38,8 @@ class CourseScraper
   end
 
   def description
-
     description_meta = site_content.at_css('meta[name="description"]')
-    return 'Not provided' if description_meta.nil?
+    return '' if description_meta.nil?
 
     description_meta['content']
   end
@@ -64,7 +58,7 @@ class CourseScraper
   end
 
   def fetch_image
-    react_props["images"]['primary']
+    react_props['images']['primary']
   end
 
   def attach_featured_image
